@@ -1,0 +1,18 @@
+body {
+  padding: 50px;
+}
+.register {
+  &__input {
+      width: 200px;
+      padding: 10px 20px;
+      outline: none;
+    border: 1px solid #ccc;
+    &.error {
+      border-color: red;
+    }
+  }
+  &__button{
+      padding: 10px 20px;
+      margin-left: 10px;
+  }
+}
