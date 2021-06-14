@@ -11,6 +11,7 @@ const Register = () => {
     const [step, setStep] = useState(1);
     const [users, setUsers] = useState([]);
     const [nameError, setNameError] = useState(false);
+    const [emailError,setEmailError] = useState(false);
 
     const inputHandler = (e) => {
         const { name, value } = e.target;
@@ -28,6 +29,9 @@ const Register = () => {
         if (nameError) {
             setNameError(false);
         }
+        if (emailError){
+            setEmailError(false);
+        }
         setUserData({
             username: "",
             email: "",
@@ -37,8 +41,12 @@ const Register = () => {
 
     const stepHandler = () => {
         const user = users.find(user => user.username === userData.username);
+        const email = users.find(user => user.email ===userData.email);
         if (user) {
             return setNameError(true);
+        }
+        if (email){
+            return setEmailError(true);
         }
         setStep(step + 1);
     }
@@ -55,7 +63,7 @@ const Register = () => {
                 onChange={inputHandler} />) : (step === 2) ? (
                     <input type="email"
                         name="email"
-                        className="register__input"
+                        className={`register__input ${emailError ? 'error' : ''}`}
                         value={userData.email}
                         placeholder="E-mail..."
                         onChange={inputHandler} />) :
