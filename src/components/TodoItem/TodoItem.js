@@ -8,40 +8,30 @@ const TodoItem = ({todo,todos,setTodos}) => {
     const[isEditorActive,setIsEditorActive] = useState(false);
     const[editingText,setEditingText] = useState("");
 
-    const editTodo = (id,text) => {
-        setEditingText(text);
-        setIsEditorActive(prevState => !prevState);
-    if(isEditorActive){
+    function helper(id,key,value) {
         const newTodos = todos.map(todo => {
         if (todo.id === id) {
-            return {...todo, text: editingText}
+       return {...todo,[key] : value}
         }
         return todo
     })
         setTodos(newTodos);
-    }}
+    }
+
+    const editTodo = (id,text) => {
+        setEditingText(text);
+        setIsEditorActive(!isEditorActive);
+    if(isEditorActive){
+    helper(id,"text",editingText);
+      }
+    }
 
     function statusHandler (id) {
-        const newTodos = todos.map(
-            todo => {
-                if(todo.id === id) {
-                    if(todo.status !== "done"){
-                        return {...todo, status:"done"}}
-                    return {...todo, status:"new"}
-                }
-                return todo;
-            })
-        setTodos(newTodos); //кладем в сет новые, обработка клика
+        helper(id, "status", todo.status !== "done" ? "done" : "new");
     }
 
     function changeStatus (e, id) {
-        const newTodos = todos.map(todo => {
-            if (todo.id === id) {
-                return {...todo, status: e.target.value}
-            }
-            return todo
-        })
-        setTodos(newTodos)
+        helper(id,"status",e.target.value);
     }
 
     function deleteTodo (id) {

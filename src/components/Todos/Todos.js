@@ -7,6 +7,7 @@ import IOSSwitch from "../IOSSwitch/IOSSwitch";
 const Todos = () => {
     const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || []);
     const [newTodo, setNewTodo] = useState("");
+    const [switchTodo,setSwitchTodo] = useState (false);
     const inputChange = (e) => {
         setNewTodo(e.target.value);
     };
@@ -22,14 +23,18 @@ const Todos = () => {
     };
     console.log(todos);
 
-
     function saveTodos () {
         localStorage.setItem('todos', JSON.stringify(todos))
     }
 
+    const switchOnOff = ({target: {checked}})=>{
+        setSwitchTodo(checked);
+    }
+
     useEffect(()=>{
-        saveTodos();
-    },[todos]) //по сути автосохранение по умолчанию
+        if(switchTodo){
+        saveTodos();}},
+        [todos])
 
     return (
         <div className="todos">
@@ -51,16 +56,16 @@ const Todos = () => {
                                     className="todos__save"
                                     onClick={saveTodos}>Save todos</Button> : null}
             <div className="todos__autosave">
-                {/* eslint-disable-next-line react/jsx-no-undef */}
+
                 <FormControlLabel
-                    control={<IOSSwitch checked={true}
-                                        onChange={()=>{}} />}
-                    label="iOS style"
+                    control={<IOSSwitch checked={switchTodo}
+                                        onChange={switchOnOff} />}
+                    label="Autosave"
                 />
                 <Checkbox
                     color="default"
-                    checked={true}
-                    onChange={() => {}}
+                    checked={switchTodo}
+                    onChange={switchOnOff}
                 />
                 Autosave
             </div>
